@@ -1,8 +1,8 @@
 import json
 
 while True:
-    print ("\n To Do List Project \n Menu \n 1)Read \n 2)Create \n 3)Delete \n 4)Quit")
-    answer = input ("Select what you want to do (1/2/3/4): ")
+    print ("\n To Do List Project \n Menu \n 1)Read \n 2)Create \n 3)Delete \n 4)Edit \n 5)Quit")
+    answer = input ("Select what you want to do (1/2/3/4/5): ")
 
     if answer == "2":
         new_task = input ("What you want to add in your list; ")
@@ -34,6 +34,7 @@ while True:
             with open("list.json", "r") as f:
                 tasks = json.load(f)
 
+                print("Your current tasks:")
                 for i, task in enumerate (tasks, start = 1):
                     print (f"{i} - {task}")
 
@@ -55,6 +56,38 @@ while True:
         except Exception as e:
             print (f"Error: {e}")
     elif answer == "4":
+
+        try:
+            with open("list.json", "r") as f:
+                tasks = json.load(f)
+
+            if not tasks:
+                print("Your todo list is empty!")
+                continue
+
+            print("Your current tasks:")
+            for i, task in enumerate(tasks, start=1):
+                print(f"{i} - {task}")
+
+            choice = input("Which task number do you want to edit? ")
+
+            if choice.isdigit():
+                choice = int(choice)
+                if 1 <= choice <= len(tasks):
+                    new_name = input("Enter the new name for the task: ")
+                    tasks[choice - 1] = new_name  
+                    with open("list.json", "w") as f:
+                        json.dump(tasks, f, indent=4)
+                    print("Task updated successfully!")
+                else:
+                    print("Invalid task number!")
+            else:
+                print("Please enter a valid number!")
+
+        except Exception as e:
+            print(f"Error: {e}")
+
+    elif answer == "5":
         print ("Quitting..")   
         break 
     else:
